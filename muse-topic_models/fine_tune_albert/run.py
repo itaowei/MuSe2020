@@ -40,6 +40,9 @@ parser.add_argument('-con', '--cont_emotions', dest = 'cont_emotions', required 
 # not used in challenge 
 parser.add_argument('-rm', '--regression_mode', dest = 'regression_mode', required = False, action = 'store_true', 
                     help = 'specify if arousal and valence are a score (True) or a class (False)') 
+# not used in challenge 
+parser.add_argument('-pt', '--predict_test', dest = 'predict_test', required = False, action = 'store_true', 
+                    help = 'unknown') 
 args = parser.parse_args()
 
 
@@ -55,11 +58,13 @@ def main(Param, data):
         print('test  - X: {} - y: {}'.format(len(X_test), len(y_test)))
         return data, X_train, y_train, X_devel, y_devel, X_test, y_test
     else:
-        print('test  - X: {} - y: not loaded'.format(len(ata['test']['text'])))
+        print('test  - X: {} - y: not loaded'.format(len(data['test']['text'])))
         del data['test']['labels']
         return data, X_train, y_train, X_devel, y_devel, data['test']['text']
 
-    y_names = get_class_names(args.class_name)
+    meta_path = os.path.join(args.processed_data_path, 'metadata')
+
+    y_names = get_class_names(args.class_name, meta_path)
 
     train_df = pd.DataFrame.from_dict(data['train'])
     devel_df = pd.DataFrame.from_dict(data['devel'])
@@ -136,4 +141,4 @@ if __name__  == "__main__":
                         , None)
 
     if not args.predict_test:
-        main(Param, task_data_path, transcription_path)
+        main(Param, data)
