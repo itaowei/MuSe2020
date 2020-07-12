@@ -83,11 +83,12 @@ The `train.py` script accepts the following list of arguments.
 ```
 
 ## Evaluation
-Start training with the baseline using the `start_training.sh` file in the `training` forlder. For example:
+Start evaluating with the baseline using the `start_evaluation.sh` file in the `training` forlder. For example:
 ```console
-(muse_e2u)$ python evaluate.py --dataset_dir='/path/to/tfrecords' \
-                               --train_dir='ckpt/' \
-                               --task='3' 
+(muse_e2u)$ python evaluate.py --checkpoint_path='/path/to/saved/model/model.ckpt-XXXX' \
+                               --dataset_dir='/path/to/tfrecords/folder' \
+                               --task='1' \
+                               --output_path='./'
 ```
 
 The `evaluate.py` script accepts the following list of arguments.
