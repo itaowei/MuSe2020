@@ -9,8 +9,13 @@ def prepare_data(task_data_path, transcription_path, class_name, cont_emotions, 
     if predict_partition is not None:
         assert predict_partition in ['train', 'devel','test'], "Partition name not in 'train','devel','test'"
         predict = True 
+    else:
+        predict = False
 
-    id_to_partition, partition_to_id = get_partition(task_data_path)
+    csv_path = os.path.join(os.path.dirname(task_data_path), 'metadata')
+    csv_path = os.path.join(csv_path, 'partition.csv')
+    id_to_partition, partition_to_id = get_partition(task_data_path, csv_path)
+
     data = {}
     
     if predict:
@@ -46,7 +51,7 @@ def prepare_data(task_data_path, transcription_path, class_name, cont_emotions, 
 
                         # training without test labels available
                         label_file = os.path.join(task_data_path, 'label_segments', class_name, str(sample_id) + ".csv")
-                        if args.class_name in ['arousal', 'valence'] and args.cont_emotions:
+                        if class_name in ['arousal', 'valence'] and cont_emotions:
                             y_list = read_cont_scores(label_file)
                         else:
                             y_list = read_classification_classes(label_file)
